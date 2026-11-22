@@ -20,9 +20,11 @@ Language trim (Arabic and English only):
 | Chinese text in `.env.example` and the audio workflow templates | Replaced with English. |
 | Tests that depended on removed assets | 14 tests removed. The rest of the suite passes, except one test that also fails upstream (`test_source_resource_links`). |
 
-Not trimmed: the confirm UI (`scripts/confirm_ui`) still carries Chinese, Traditional Chinese and Japanese UI strings alongside English, and has no Arabic strings. `SPONSORS_CN.md` stays because the integrity guard requires it.
+Not trimmed: the confirm UI (`scripts/confirm_ui`) still carries Chinese, Traditional Chinese and Japanese UI strings alongside English, and has no Arabic strings.
 
-Total goes from 79 MB to about 18 MB. Everything else is untouched: `SKILL.md`, `workflows/`, `references/`, `scripts/`, brand, deck, layout and chart templates, `LICENSE`, `SPONSORS*.md`. The upstream `attribution_guard.py` integrity check passes.
+Sponsor pages removed: `SPONSORS.md` and `SPONSORS_CN.md` are deleted, together with the `sponsors` field in `SKILL.md`, the sponsor note in its rules, and the matching prompt-audit entries. To keep the skill runnable, `scripts/attribution_guard.py` no longer requires those files or that field. `LICENSE` (MIT, Copyright (c) 2025-2026 Hugo He) and the copyright, license and repository fields in `SKILL.md` are unchanged and still checked.
+
+Total goes from 79 MB to about 18 MB. Everything else is untouched: `workflows/`, `references/`, the remaining scripts and templates.
 
 ## Install
 
@@ -32,4 +34,4 @@ Python dependencies: `pip install -r skills/ppt-master/requirements.txt`.
 
 ## Updating from upstream
 
-Re-run a sparse checkout of `skills/ppt-master`, then delete `templates/icons` and `templates/sounds`. Do not edit `SKILL.md`, `LICENSE` or `SPONSORS*.md`, because the integrity guard checks them.
+Re-run a sparse checkout of `skills/ppt-master`, then delete `templates/icons` and `templates/sounds`. Keep `LICENSE` and the copyright, license and repository fields in `SKILL.md` as they are, because the integrity guard checks them. Re-apply the guard change above if you pull a newer upstream `attribution_guard.py`.
