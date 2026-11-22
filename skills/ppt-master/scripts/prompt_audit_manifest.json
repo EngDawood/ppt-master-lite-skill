@@ -1245,20 +1245,13 @@
       {
         "kind": "exact",
         "fingerprint": "d886e9fcb8dc",
-        "paths": [
-          "skills/ppt-master/templates/brands/中国电信/templates/design_spec.md",
-          "skills/ppt-master/templates/brands/中国电建/templates/design_spec.md"
-        ],
+        "paths": [],
         "reason": "Brand preset scaffolds share fixed section boilerplate by design."
       },
       {
         "kind": "exact",
         "fingerprint": "0faa93c4c11f",
-        "paths": [
-          "skills/ppt-master/templates/brands/中国电信/templates/design_spec.md",
-          "skills/ppt-master/templates/brands/中国电建/templates/design_spec.md",
-          "skills/ppt-master/templates/brands/中汽研/templates/design_spec.md"
-        ],
+        "paths": [],
         "reason": "Brand preset scaffolds share fixed section boilerplate by design."
       },
       {

@@ -49,17 +49,13 @@ python3 scripts/image_gen.py --list-backends
 
 Backends are grouped into Core / Extended / Experimental tiers. Run `python3 scripts/image_gen.py --list-backends` for the current list.
 
-`--aspect_ratio` and manifest `aspect_ratio` accept any positive `W:H`, decimals included (`1.85:1`); only a malformed value fails before any request. A ratio never fails a request: each backend outputs the nearest size its model allows and prints `Ratio: requested … -> output …` when the output differs by more than 1%; the manifest keeps the requested ratio and downstream placement crops to it. Backends whose models take free width and height (OpenAI GPT Image 2/2.5, MiniMax, Qwen, Volcengine, Zhipu, Tencent) keep their listed size for a listed ratio and fit any other ratio or tier to the model's official limits (`fit_size` in `backend_common.py`), at the tier's 1:1 pixel budget, clamping a ratio beyond the model's maximum. Backends with a fixed ratio set (Gemini, OpenRouter, fal, BFL, Ideogram, Replicate, Stability, ModelScope, SiliconFlow) send their nearest listed ratio. The default Gemini model, `gemini-nano-banana-2.1`, takes `1:1 1:4 1:8 2:3 3:2 3:4 4:1 4:3 4:5 5:4 8:1 9:16 16:9 21:9` (including extreme ratios, no `3:1`) at `1K/2K/4K`, but not `512px`. `gemini-3.1-flash-image` retains the same ratios and also supports `512px`; `gemini-2.5-flash-image` takes only `1:1 2:3 3:2 3:4 4:3 4:5 5:4 9:16 16:9 21:9` at `1K`.
+`--aspect_ratio` and manifest `aspect_ratio` accept any positive `W:H`, decimals included (`1.85:1`); only a malformed value fails before any request. A ratio never fails a request: each backend outputs the nearest size its model allows and prints `Ratio: requested … -> output …` when the output differs by more than 1%; the manifest keeps the requested ratio and downstream placement crops to it. Backends whose models take free width and height (OpenAI GPT Image 2/2.5) keep their listed size for a listed ratio and fit any other ratio or tier to the model's official limits (`fit_size` in `backend_common.py`), at the tier's 1:1 pixel budget, clamping a ratio beyond the model's maximum. Backends with a fixed ratio set (Gemini, OpenRouter, fal, BFL, Ideogram, Replicate, Stability) send their nearest listed ratio. The default Gemini model, `gemini-nano-banana-2.1`, takes `1:1 1:4 1:8 2:3 3:2 3:4 4:1 4:3 4:5 5:4 8:1 9:16 16:9 21:9` (including extreme ratios, no `3:1`) at `1K/2K/4K`, but not `512px`. `gemini-3.1-flash-image` retains the same ratios and also supports `512px`; `gemini-2.5-flash-image` takes only `1:1 2:3 3:2 3:4 4:3 4:5 5:4 9:16 16:9 21:9` at `1K`.
 
 Backend selection:
 
 ```bash
 python3 scripts/image_gen.py "A cat" --backend openai
-python3 scripts/image_gen.py "A cinematic portrait" --backend minimax
-python3 scripts/image_gen.py "A product launch hero image" --backend qwen
-python3 scripts/image_gen.py "科技感背景图" --backend zhipu
-python3 scripts/image_gen.py "A product KV in cinematic style" --backend volcengine
-python3 scripts/image_gen.py "A mountain landscape" --backend tencent
+python3 scripts/image_gen.py "A cinematic portrait" --backend gemini
 ```
 
 Configuration sources:
@@ -143,26 +139,6 @@ Recommendation:
 - Default to the Core tier for routine PPT work
 - Use Extended only when you need a specific model style
 - Treat Experimental backends as opt-in
-
-Example `.env` for MiniMax image backend:
-
-```env
-IMAGE_BACKEND=minimax
-MINIMAX_API_KEY=your-api-key
-# Optional: override base URL (defaults to https://api.minimaxi.com, domestic China endpoint)
-# Use https://api.minimax.io for overseas access
-# MINIMAX_BASE_URL=https://api.minimax.io
-# MINIMAX_MODEL=image-01
-```
-
-Volcengine serves Seedream through two gateways whose keys are not interchangeable:
-
-| Gateway | Key | `VOLCENGINE_BASE_URL` | Default model |
-|---|---|---|---|
-| Ark (default) | `ARK_API_KEY` | `https://ark.cn-beijing.volces.com/api/v3` | `doubao-seedream-5-0-pro-260628` |
-| LAS | `LAS_API_KEY` | `https://operator.las.cn-beijing.volces.com/api/v1` | `doubao-seedream-4-5-251128` |
-
-Without `VOLCENGINE_BASE_URL`, the backend uses LAS only when `LAS_API_KEY` is the sole key set, and Ark otherwise; it sends the key that matches the chosen gateway first, with `VOLCENGINE_API_KEY` as the shared fallback. `VOLCENGINE_MODEL` accepts Seedream 5.0 pro, 5.0 flash (`doubao-seedream-5-0-flash-260915`), and 4.5. Seedream 5.0 pro / flash allow 921,600–4,624,220 total pixels, so a `4K` request outputs the largest legal size near 2K. Ark is retiring Seedream 4.5 ([deprecation notice](https://docs.volcengine.com/docs/ark/model-deprecation-notice)).
 
 ### Animated GIF output (OpenAI only)
 

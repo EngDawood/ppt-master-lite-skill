@@ -7,16 +7,9 @@ Dispatches to the appropriate backend based on explicit provider configuration.
 Backend selection (`IMAGE_BACKEND` in `.env` or the current process environment):
   IMAGE_BACKEND=gemini      -> Gemini backend (google-genai SDK)
   IMAGE_BACKEND=openai      -> OpenAI-compatible backend (raw HTTP via requests)
-  IMAGE_BACKEND=minimax     -> MiniMax image backend
   IMAGE_BACKEND=stability   -> Stability AI backend
   IMAGE_BACKEND=bfl         -> Black Forest Labs FLUX backend
   IMAGE_BACKEND=ideogram    -> Ideogram backend
-  IMAGE_BACKEND=qwen        -> Alibaba Qwen image backend
-  IMAGE_BACKEND=zhipu       -> Zhipu GLM-Image backend
-  IMAGE_BACKEND=volcengine  -> Volcengine Seedream backend
-  IMAGE_BACKEND=tencent     -> Tencent Cloud TokenHub backend
-  IMAGE_BACKEND=modelscope  -> ModelScope backend
-  IMAGE_BACKEND=siliconflow -> SiliconFlow backend
   IMAGE_BACKEND=fal         -> fal.ai backend
   IMAGE_BACKEND=replicate   -> Replicate backend
   IMAGE_BACKEND=openrouter  -> OpenRouter backend
@@ -113,61 +106,6 @@ BACKEND_REGISTRY = {
         "key_hint": "OPENAI_API_KEY",
         "aliases": ["openai-compatible", "openai_compatible"],
     },
-    "minimax": {
-        "module": "backend_minimax",
-        "tier": "experimental",
-        "label": "MiniMax Image",
-        "default_model": "image-01",
-        "default_image_size": "1K",
-        "key_hint": "MINIMAX_API_KEY",
-        "aliases": ["minimaxi"],
-    },
-    "qwen": {
-        "module": "backend_qwen",
-        "tier": "core",
-        "label": "Alibaba Qwen Image",
-        "default_model": "qwen-image-2.0-pro",
-        "default_image_size": "1K",
-        "key_hint": "QWEN_API_KEY / DASHSCOPE_API_KEY",
-        "aliases": ["alibaba", "dashscope"],
-    },
-    "zhipu": {
-        "module": "backend_zhipu",
-        "tier": "core",
-        "label": "Zhipu GLM-Image",
-        "default_model": "glm-image",
-        "default_image_size": "1K",
-        "key_hint": "ZHIPU_API_KEY / BIGMODEL_API_KEY",
-        "aliases": ["bigmodel", "glm", "glm-image"],
-    },
-    "volcengine": {
-        "module": "backend_volcengine",
-        "tier": "core",
-        "label": "Volcengine Seedream",
-        "default_model": "doubao-seedream-5-0-pro-260628",
-        "default_image_size": "2K",
-        "key_hint": "ARK_API_KEY / VOLCENGINE_API_KEY / LAS_API_KEY",
-        "aliases": ["ark", "doubao", "seedream"],
-    },
-    "tencent": {
-        "module": "backend_tencent",
-        "tier": "extended",
-        "label": "Tencent Cloud TokenHub",
-        "default_model": "hy-image-v3",
-        "default_image_size": "1K",
-        "key_hint": "TENCENT_API_KEY / TOKENHUB_API_KEY",
-        "aliases": ["tokenhub", "hunyuan", "tencentmaas"],
-    },
-    "modelscope": {
-        "module": "backend_modelscope",
-        "tier": "experimental",
-        "label": "ModelScope",
-        "default_model": None,
-        "model_hint": "MODELSCOPE_MODEL",
-        "default_image_size": "1K",
-        "key_hint": "MODELSCOPE_API_KEY",
-        "aliases": ["modelscope", "model-scope"]
-    },
     "stability": {
         "module": "backend_stability",
         "tier": "extended",
@@ -193,15 +131,6 @@ BACKEND_REGISTRY = {
         "default_model": "ideogram-v3",
         "default_image_size": "1K",
         "key_hint": "IDEOGRAM_API_KEY",
-    },
-    "siliconflow": {
-        "module": "backend_siliconflow",
-        "tier": "experimental",
-        "label": "SiliconFlow",
-        "default_model": "Qwen/Qwen-Image",
-        "default_image_size": "1K",
-        "key_hint": "SILICONFLOW_API_KEY",
-        "aliases": ["silicon"],
     },
     "fal": {
         "module": "backend_fal",

@@ -114,20 +114,6 @@ class RetryDelayTests(unittest.TestCase):
         sleep.assert_not_called()
         self.assertEqual(backend_common.retry_after_seconds(raised.exception), 86400)
 
-    def test_non_openai_backend_waits_for_retry_after(self) -> None:
-        from image_backends import backend_qwen
-
-        limited = _response(429, '{"code": "Throttling.RateQuota"}', {"Retry-After": "42"})
-        limited.json = lambda: {"code": "Throttling.RateQuota"}
-        limited.ok = False
-        with mock.patch.dict(os.environ, {"QWEN_API_KEY": "test"}), \
-                mock.patch.object(backend_qwen.requests, "post", return_value=limited), \
-                mock.patch.object(backend_qwen.time, "sleep") as sleep, \
-                mock.patch("sys.stdout"):
-            with self.assertRaises(RuntimeError):
-                backend_qwen.generate("p", max_retries=1)
-        sleep.assert_called_once_with(42)
-
     def test_rate_limit_backoff_has_bounded_jitter(self) -> None:
         exc = backend_common.http_error(_response(429, "slow down"), "x")
         self.assertIsNone(exc.retry_after)

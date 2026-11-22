@@ -4,26 +4,20 @@
 This script uses provider backends for the same per-slide output contract on
 macOS, Linux, and Windows. `edge-tts` remains the default no-key backend and
 also writes one compact, word-timed SRT file per slide from the same TTS stream.
-MiniMax and CosyVoice request word timings; ElevenLabs requests character
-alignment. All four apply the same compact, text-faithful cue regrouping.
-Qwen and OpenAI remain audio-only; neither backend supplies subtitle timings.
+ElevenLabs requests character alignment and applies the same compact,
+text-faithful cue regrouping. OpenAI remains audio-only; it supplies no
+subtitle timings.
 
 Usage:
-    python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --voice zh-CN-XiaoxiaoNeural
+    python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --voice ar-SA-ZariyahNeural
     python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --provider elevenlabs --voice-id <voice_id>
-    python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --provider minimax --voice-id <voice_id>
-    python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --provider qwen --voice-id <voice>
-    python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --provider cosyvoice --voice-id <voice>
     python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --provider openai --voice-id marin
     python3 skills/ppt-master/scripts/notes_to_audio.py --list-common-voices
-    python3 skills/ppt-master/scripts/notes_to_audio.py --list-voices --locale zh-CN
+    python3 skills/ppt-master/scripts/notes_to_audio.py --list-voices --locale ar-SA
 
 Dependencies:
     python3 -m pip install edge-tts
     ELEVENLABS_API_KEY=<key> for --provider elevenlabs
-    MINIMAX_API_KEY=<key> for --provider minimax
-    QWEN_API_KEY or DASHSCOPE_API_KEY=<key> for --provider qwen
-    COSYVOICE_API_KEY or DASHSCOPE_API_KEY=<key> for --provider cosyvoice
     OPENAI_API_KEY=<key> for --provider openai (aiohttp supplied by edge-tts)
 """
 
@@ -49,12 +43,9 @@ from pptx_workspace import (
 )
 from slide_roster import discover_slide_svgs, sort_slide_paths
 from tts_backends import (
-    backend_cosyvoice,
     backend_edge,
     backend_elevenlabs,
-    backend_minimax,
     backend_openai,
-    backend_qwen,
 )
 from tts_backends.backend_common import temporary_path
 
@@ -89,10 +80,6 @@ def _load_tts_env_file() -> None:
     """Load TTS-related keys from the first .env file, without overriding shell env."""
     load_prefixed_env_file((
         "ELEVENLABS_",
-        "MINIMAX_",
-        "QWEN_",
-        "DASHSCOPE_",
-        "COSYVOICE_",
         "OPENAI_",
     ))
 
@@ -302,31 +289,12 @@ def _provider_manifest_details(
             "speed": args.elevenlabs_speed,
             "speaker_boost": args.elevenlabs_speaker_boost,
         }
-    if backend.provider == "minimax":
-        return args.minimax_model, {
-            "speed": args.minimax_speed,
-            "volume": args.minimax_volume,
-            "pitch": args.minimax_pitch,
-            "language_boost": args.minimax_language_boost,
-        }
-    if backend.provider == "qwen":
-        return args.qwen_model, {
-            "language_type": args.qwen_language_type,
-            "optimize_instructions": args.qwen_optimize_instructions,
-            "custom_instructions": True if args.qwen_instructions else None,
-        }
     if backend.provider == "openai":
         return args.openai_model, {
             "speed": args.openai_speed,
             "custom_instructions": True if args.openai_instructions else None,
         }
-    return args.cosyvoice_model, {
-        "volume": args.cosyvoice_volume,
-        "rate": args.cosyvoice_rate,
-        "pitch": args.cosyvoice_pitch,
-        "language_hint": args.cosyvoice_language_hint,
-        "custom_instruction": True if args.cosyvoice_instruction else None,
-    }
+    raise ValueError(f"unsupported provider: {backend.provider}")
 
 
 def _narration_manifest(
@@ -456,7 +424,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("-o", "--output", type=Path, default=None)
     parser.add_argument(
         "--provider",
-        choices=["edge", "elevenlabs", "minimax", "qwen", "cosyvoice", "openai"],
+        choices=["edge", "elevenlabs", "openai"],
         default="edge",
         help="audio generation backend (default: edge)",
     )
@@ -540,40 +508,6 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="optionally override ElevenLabs speaker boost",
     )
-    parser.add_argument("--minimax-api-key-env", default="MINIMAX_API_KEY",
-                        help="environment variable containing the MiniMax API key")
-    parser.add_argument("--minimax-model", default="speech-2.8-hd",
-                        help="MiniMax T2A model ID (default: speech-2.8-hd)")
-    parser.add_argument("--minimax-base-url", default=None,
-                        help="MiniMax T2A endpoint or base URL")
-    parser.add_argument("--minimax-output-format", default="mp3", choices=["mp3", "wav"],
-                        help="MiniMax audio format for PPT narration (default: mp3)")
-    parser.add_argument("--minimax-sample-rate", type=int, default=32000,
-                        help="MiniMax sample rate (default: 32000)")
-    parser.add_argument("--minimax-bitrate", type=int, default=128000,
-                        help="MiniMax bitrate in bps (default: 128000)")
-    parser.add_argument("--minimax-channel", type=int, default=1,
-                        help="MiniMax channel count (default: 1)")
-    parser.add_argument("--minimax-speed", type=float, default=1.0,
-                        help="MiniMax speaking speed (default: 1.0)")
-    parser.add_argument("--minimax-volume", type=float, default=1.0,
-                        help="MiniMax volume multiplier (default: 1.0)")
-    parser.add_argument("--minimax-pitch", type=int, default=0,
-                        help="MiniMax pitch adjustment (default: 0)")
-    parser.add_argument("--minimax-language-boost", default="auto",
-                        help="MiniMax language boost (default: auto)")
-    parser.add_argument("--qwen-api-key-env", default=None,
-                        help="environment variable containing the Qwen/DashScope API key")
-    parser.add_argument("--qwen-model", default="qwen3-tts-flash",
-                        help="Qwen TTS model ID (default: qwen3-tts-flash)")
-    parser.add_argument("--qwen-base-url", default=None,
-                        help="Qwen TTS endpoint or base URL")
-    parser.add_argument("--qwen-language-type", default="Chinese",
-                        help="Qwen language_type, e.g. Chinese or English (default: Chinese)")
-    parser.add_argument("--qwen-instructions", default=None,
-                        help="optional Qwen instruction text for supported models")
-    parser.add_argument("--qwen-optimize-instructions", action=argparse.BooleanOptionalAction,
-                        default=None, help="optionally ask Qwen to optimize instructions")
     parser.add_argument("--openai-api-key-env", default="OPENAI_API_KEY",
                         help="environment variable containing the OpenAI Realtime API key")
     parser.add_argument("--openai-model",
@@ -583,38 +517,9 @@ def main(argv: list[str] | None = None) -> int:
                         help="OpenAI speaking speed, 0.25-1.5 (default: 1.0)")
     parser.add_argument("--openai-instructions", default=None,
                         help="optional delivery hint; cannot authorize changing the spoken text")
-    parser.add_argument("--cosyvoice-api-key-env", default="COSYVOICE_API_KEY",
-                        help="environment variable containing the CosyVoice/DashScope API key")
-    parser.add_argument("--cosyvoice-model", default="cosyvoice-v3-flash",
-                        help="CosyVoice model ID (default: cosyvoice-v3-flash)")
-    parser.add_argument("--cosyvoice-base-url", default=None,
-                        help="CosyVoice SpeechSynthesizer endpoint or base URL")
-    parser.add_argument("--cosyvoice-output-format", default="mp3", choices=["mp3", "wav"],
-                        help="CosyVoice audio format for PPT narration (default: mp3)")
-    parser.add_argument("--cosyvoice-sample-rate", type=int, default=24000,
-                        choices=[8000, 16000, 22050, 24000, 44100, 48000],
-                        help="CosyVoice sample rate (default: 24000)")
-    parser.add_argument("--cosyvoice-volume", type=int, default=None,
-                        help="optional CosyVoice volume, 0-100")
-    parser.add_argument("--cosyvoice-rate", type=float, default=None,
-                        help="optional CosyVoice speaking rate, 0.5-2.0")
-    parser.add_argument("--cosyvoice-pitch", type=float, default=None,
-                        help="optional CosyVoice pitch multiplier, 0.5-2.0")
-    parser.add_argument("--cosyvoice-instruction", default=None,
-                        help="optional CosyVoice instruction text for supported voices/models")
-    parser.add_argument("--cosyvoice-language-hint", default=None,
-                        help="optional CosyVoice language hint, e.g. zh, en, ja")
-    parser.add_argument(
-        "--cosyvoice-audio-only",
-        action="store_true",
-        help=(
-            "skip CosyVoice timestamps/SRT for a model or voice that does not "
-            "support them"
-        ),
-    )
     parser.add_argument("--list-common-voices", action="store_true", help="print a curated voice list and exit")
     parser.add_argument("--list-voices", action="store_true", help="query provider voices and exit")
-    parser.add_argument("--locale", default=None, help='filter --list-voices by locale, e.g. "zh-CN"')
+    parser.add_argument("--locale", default=None, help='filter --list-voices by locale, e.g. "ar-SA"')
     args = parser.parse_args(_normalize_voice_option_args(
         sys.argv[1:] if argv is None else argv
     ))
@@ -629,12 +534,6 @@ def main(argv: list[str] | None = None) -> int:
                 backend_elevenlabs.print_voices(
                     backend_elevenlabs.read_elevenlabs_api_key(args.elevenlabs_api_key_env)
                 )
-            elif args.provider == "minimax":
-                backend_minimax.print_voices()
-            elif args.provider == "qwen":
-                backend_qwen.print_voices()
-            elif args.provider == "cosyvoice":
-                backend_cosyvoice.print_voices()
             elif args.provider == "openai":
                 backend_openai.print_voices()
             else:
@@ -652,7 +551,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.provider == "edge" and not args.voice:
         parser.error(
             "--voice is required for --provider edge. Run --list-voices --locale <locale> to discover voices "
-            "(e.g. --locale zh-CN), or follow skills/ppt-master/workflows/stages/generate-audio.md "
+            "(e.g. --locale ar-SA), or follow skills/ppt-master/workflows/stages/generate-audio.md "
             "for an AI-curated recommendation."
         )
         raise AssertionError("unreachable")
@@ -686,30 +585,11 @@ def main(argv: list[str] | None = None) -> int:
         ),
         ("--elevenlabs-style", args.elevenlabs_style, 0.0, 1.0),
         ("--elevenlabs-speed", args.elevenlabs_speed, 0.7, 1.2),
-        ("--cosyvoice-volume", args.cosyvoice_volume, 0, 100),
-        ("--cosyvoice-rate", args.cosyvoice_rate, 0.5, 2.0),
-        ("--cosyvoice-pitch", args.cosyvoice_pitch, 0.5, 2.0),
         ("--openai-speed", args.openai_speed, 0.25, 1.5),
     ):
         if value is not None and not minimum <= value <= maximum:
             parser.error(f"{option} must be between {minimum} and {maximum}")
             raise AssertionError("unreachable")
-
-    if args.cosyvoice_audio_only and args.provider != "cosyvoice":
-        parser.error("--cosyvoice-audio-only requires --provider cosyvoice")
-        raise AssertionError("unreachable")
-
-    if args.provider == "qwen" and args.qwen_instructions:
-        if "instruct" not in args.qwen_model:
-            parser.error(
-                "--qwen-instructions requires a Qwen3 TTS Instruct model"
-            )
-            raise AssertionError("unreachable")
-    if args.qwen_optimize_instructions and not args.qwen_instructions:
-        parser.error(
-            "--qwen-optimize-instructions requires --qwen-instructions"
-        )
-        raise AssertionError("unreachable")
 
     if args.provider == "elevenlabs":
         if not voice_id:
@@ -722,26 +602,6 @@ def main(argv: list[str] | None = None) -> int:
             print(f"error: {exc}", file=sys.stderr)
             return 1
         backend = AudioBackend(provider=args.provider, extension=extension, api_key=api_key, voice_id=voice_id)
-    elif args.provider == "minimax":
-        try:
-            api_key = backend_minimax.read_minimax_api_key(args.minimax_api_key_env)
-            extension = backend_minimax.output_extension(args.minimax_output_format)
-        except Exception as exc:
-            print(f"error: {exc}", file=sys.stderr)
-            return 1
-        backend = AudioBackend(provider=args.provider, extension=extension, api_key=api_key, voice_id=voice_id)
-    elif args.provider == "qwen":
-        try:
-            api_key = backend_qwen.read_qwen_api_key(args.qwen_api_key_env)
-        except Exception as exc:
-            print(f"error: {exc}", file=sys.stderr)
-            return 1
-        backend = AudioBackend(
-            provider=args.provider,
-            extension=backend_qwen.output_extension(),
-            api_key=api_key,
-            voice_id=voice_id,
-        )
     elif args.provider == "openai":
         try:
             api_key = backend_openai.read_openai_api_key(args.openai_api_key_env)
@@ -751,19 +611,6 @@ def main(argv: list[str] | None = None) -> int:
         backend = AudioBackend(
             provider=args.provider,
             extension=backend_openai.output_extension(),
-            api_key=api_key,
-            voice_id=voice_id,
-        )
-    elif args.provider == "cosyvoice":
-        try:
-            api_key = backend_cosyvoice.read_cosyvoice_api_key(args.cosyvoice_api_key_env)
-            extension = backend_cosyvoice.output_extension(args.cosyvoice_output_format)
-        except Exception as exc:
-            print(f"error: {exc}", file=sys.stderr)
-            return 1
-        backend = AudioBackend(
-            provider=args.provider,
-            extension=extension,
             api_key=api_key,
             voice_id=voice_id,
         )
@@ -778,14 +625,7 @@ def main(argv: list[str] | None = None) -> int:
     notes_dir = project / "notes"
     output_dir = args.output or (project / "audio")
     subtitle_dir = output_dir
-    writes_subtitles = backend.provider in {
-        "edge",
-        "elevenlabs",
-        "minimax",
-    } or (
-        backend.provider == "cosyvoice"
-        and not args.cosyvoice_audio_only
-    )
+    writes_subtitles = backend.provider in {"edge", "elevenlabs"}
 
     try:
         note_roster = _expected_note_roster(project)
@@ -879,39 +719,6 @@ def main(argv: list[str] | None = None) -> int:
                         subtitle_path=subtitle_path,
                         subtitle_max_chars=args.subtitle_max_chars,
                     )
-                elif backend.provider == "minimax":
-                    if writes_subtitles:
-                        subtitle_path = subtitle_dir / f"{output_path.stem}.srt"
-                    backend_minimax.generate(
-                        text,
-                        output_path,
-                        api_key=backend.api_key,
-                        voice_id=backend.voice_id,
-                        model=args.minimax_model,
-                        audio_format=args.minimax_output_format,
-                        sample_rate=args.minimax_sample_rate,
-                        bitrate=args.minimax_bitrate,
-                        channel=args.minimax_channel,
-                        speed=args.minimax_speed,
-                        volume=args.minimax_volume,
-                        pitch=args.minimax_pitch,
-                        language_boost=args.minimax_language_boost,
-                        base_url=args.minimax_base_url,
-                        subtitle_path=subtitle_path,
-                        subtitle_max_chars=args.subtitle_max_chars,
-                    )
-                elif backend.provider == "qwen":
-                    backend_qwen.generate(
-                        text,
-                        output_path,
-                        api_key=backend.api_key,
-                        voice_id=backend.voice_id,
-                        model=args.qwen_model,
-                        language_type=args.qwen_language_type,
-                        instructions=args.qwen_instructions,
-                        optimize_instructions=args.qwen_optimize_instructions,
-                        base_url=args.qwen_base_url,
-                    )
                 elif backend.provider == "openai":
                     asyncio.run(backend_openai.generate(
                         text,
@@ -922,26 +729,6 @@ def main(argv: list[str] | None = None) -> int:
                         speed=args.openai_speed,
                         instructions=args.openai_instructions,
                     ))
-                elif backend.provider == "cosyvoice":
-                    if writes_subtitles:
-                        subtitle_path = subtitle_dir / f"{output_path.stem}.srt"
-                    backend_cosyvoice.generate(
-                        text,
-                        output_path,
-                        api_key=backend.api_key,
-                        voice_id=backend.voice_id,
-                        model=args.cosyvoice_model,
-                        audio_format=args.cosyvoice_output_format,
-                        sample_rate=args.cosyvoice_sample_rate,
-                        volume=args.cosyvoice_volume,
-                        rate=args.cosyvoice_rate,
-                        pitch=args.cosyvoice_pitch,
-                        instruction=args.cosyvoice_instruction,
-                        language_hint=args.cosyvoice_language_hint,
-                        base_url=args.cosyvoice_base_url,
-                        subtitle_path=subtitle_path,
-                        subtitle_max_chars=args.subtitle_max_chars,
-                    )
                 _remove_stale_audio_variants(output_path)
                 if not writes_subtitles:
                     output_path.with_suffix(".srt").unlink(missing_ok=True)

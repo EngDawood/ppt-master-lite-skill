@@ -38,20 +38,14 @@ class _SubtitleCue:
 
 
 COMMON_VOICES = [
-    ("zh-CN", "zh-CN-XiaoxiaoNeural", "女声，普通话，清晰自然，默认推荐"),
-    ("zh-CN", "zh-CN-XiaoyiNeural", "女声，普通话，明亮"),
-    ("zh-CN", "zh-CN-YunjianNeural", "男声，普通话，稳重"),
-    ("zh-CN", "zh-CN-YunxiNeural", "男声，普通话，年轻"),
-    ("zh-CN", "zh-CN-YunxiaNeural", "男声，普通话，少年感"),
-    ("zh-CN", "zh-CN-YunyangNeural", "男声，普通话，播报感"),
-    ("zh-HK", "zh-HK-HiuGaaiNeural", "女声，粤语"),
-    ("zh-HK", "zh-HK-WanLungNeural", "男声，粤语"),
-    ("zh-TW", "zh-TW-HsiaoChenNeural", "女声，台湾普通话"),
-    ("zh-TW", "zh-TW-YunJheNeural", "男声，台湾普通话"),
-    ("en-US", "en-US-JennyNeural", "女声，美式英语"),
-    ("en-US", "en-US-GuyNeural", "男声，美式英语"),
-    ("en-GB", "en-GB-SoniaNeural", "女声，英式英语"),
-    ("en-GB", "en-GB-RyanNeural", "男声，英式英语"),
+    ("ar-SA", "ar-SA-ZariyahNeural", "Female, Saudi Arabic, clear and natural"),
+    ("ar-SA", "ar-SA-HamedNeural", "Male, Saudi Arabic, steady"),
+    ("ar-EG", "ar-EG-SalmaNeural", "Female, Egyptian Arabic"),
+    ("ar-EG", "ar-EG-ShakirNeural", "Male, Egyptian Arabic"),
+    ("en-US", "en-US-JennyNeural", "Female, American English"),
+    ("en-US", "en-US-GuyNeural", "Male, American English"),
+    ("en-GB", "en-GB-SoniaNeural", "Female, British English"),
+    ("en-GB", "en-GB-RyanNeural", "Male, British English"),
 ]
 
 

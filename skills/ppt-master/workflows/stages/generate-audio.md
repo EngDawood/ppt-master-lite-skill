@@ -22,7 +22,7 @@ description: Shared post-processing stage for narration audio, PPTX embedding, P
 
 ## Step 1: Determine the deck's language
 
-The AI already knows it from writing the notes — no detection script. Identify `zh` / `en` / `ja` / `ko` / …; for Chinese choose `zh-CN` (default), `zh-TW`, or `zh-HK` from context — Default may ask when unclear, Quick chooses the best supported default.
+The AI already knows it from writing the notes — no detection script. Identify `ar` or `en`; for Arabic choose `ar-SA` (default) or `ar-EG` from context, for English `en-US` or `en-GB` — Default may ask when unclear, Quick chooses the best supported default.
 
 ---
 
@@ -32,10 +32,10 @@ Default to **edge** unless the user asks for a cloud provider, higher-quality cl
 
 ```bash
 python3 skills/ppt-master/scripts/notes_to_audio.py --list-voices --locale <locale>
-python3 skills/ppt-master/scripts/notes_to_audio.py --provider <elevenlabs|minimax|qwen|cosyvoice|openai> --list-voices
+python3 skills/ppt-master/scripts/notes_to_audio.py --provider <elevenlabs|openai> --list-voices
 ```
 
-From the flat list, pick **3–6 candidates**: cover both genders when the locale has them; for edge prefer the curated `COMMON_VOICES` set; for ElevenLabs prefer voices already in the user's account and never override a user-supplied `voice_id`; for OpenAI select from its static built-in list, or use a supplied recording-based custom `voice_...` ID directly (prompt-designed voices are unsupported); for MiniMax / Qwen / CosyVoice `--list-voices` prints no catalog — use a supplied cloned `voice_id` directly (never attempt cloning here) or a system voice id from the provider's documentation; for CosyVoice subtitles use a timestamp-capable model/voice pair, and `--cosyvoice-audio-only` only when the user accepts no page-local SRT. Match the deck's tone — a Chinese consultant / financial deck leans a steady male (`zh-CN-YunjianNeural`) or clear female (`zh-CN-XiaoxiaoNeural`) voice; teaching / product decks a bright female or young male (`zh-CN-XiaoyiNeural` / `zh-CN-YunxiNeural`); launch / broadcast decks `zh-CN-YunyangNeural`; English consultant decks `en-US-GuyNeural` or `en-US-JennyNeural`; Japanese / Korean from `ja-JP-*` / `ko-KR-*` with gender + tone noted. Describe each candidate in one line in the user's chat language (gender · tone · best-fit scenario), with the exact name/ID to pass to `--voice-id` for cloud providers.
+From the flat list, pick **3–6 candidates**: cover both genders when the locale has them; for edge prefer the curated `COMMON_VOICES` set; for ElevenLabs prefer voices already in the user's account and never override a user-supplied `voice_id`; for OpenAI select from its static built-in list, or use a supplied recording-based custom `voice_...` ID directly (prompt-designed voices are unsupported); for MiniMax / Qwen / CosyVoice `--list-voices` prints no catalog — use a supplied cloned `voice_id` directly (never attempt cloning here) or a system voice id from the provider's documentation; Match the deck's tone — an Arabic consultant / financial deck leans a steady male (`ar-SA-HamedNeural`) or clear female (`ar-SA-ZariyahNeural`) voice; Egyptian-dialect audiences `ar-EG-ShakirNeural` / `ar-EG-SalmaNeural`; English consultant decks `en-US-GuyNeural` or `en-US-JennyNeural`, British `en-GB-RyanNeural` / `en-GB-SoniaNeural`. Describe each candidate in one line in the user's chat language (gender · tone · best-fit scenario), with the exact name/ID to pass to `--voice-id` for cloud providers.
 
 ---
 
@@ -45,27 +45,27 @@ From the flat list, pick **3–6 candidates**: cover both genders when the local
 
 **Default / Edit Native — one-shot interaction (mandatory)**: send one message that resolves all five decisions with a recommended value each; never split into rounds. Run `powerpoint_video.py --check` before offering automatic video export (an explicit slideshow-capture choice skips the check and uses the manual handoff). **Cloned-voice fast path**: when the user mentioned a cloned voice or "my own voice", in any language, with a `voice_id`, skip the recommendation list, pin the named provider and `voice_id`, and confirm only rate + embed + video. "Embed" means SVG re-export for Generate or `svg_to_pptx.py --roundtrip --recorded-narration audio` for Edit Native.
 
-**Message template** (Chinese; translate to the user's chat language):
+**Message template** (English; translate to the user's chat language, Arabic or English):
 
-> 检测到 notes 主语言为 **<语言>**（locale: `<locale>`）。基于 deck 调性（<风格>），我推荐以下配置：
+> I detected the notes' main language as **<language>** (locale: `<locale>`). Based on the deck's tone (<style>), I recommend:
 >
-> **生成模式**：⭐ 推荐 `<edge|elevenlabs|minimax|qwen|cosyvoice|openai>`（理由：<一句话>）。
+> **Generation mode**: ⭐ recommended `<edge|elevenlabs|openai>` (reason: <one sentence>).
 >
-> **音色**：
-> - **[1] <ShortName>** — <性别·调性·适用场景> ⭐ **推荐**
-> - [2] <ShortName> — <性别·调性·适用场景>
-> - [3] <ShortName> — <性别·调性·适用场景>
-> - 也可直接输入清单中的其他 ShortName。
+> **Voice**:
+> - **[1] <ShortName>** — <gender · tone · best for> ⭐ **recommended**
+> - [2] <ShortName> — <gender · tone · best for>
+> - [3] <ShortName> — <gender · tone · best for>
+> - You can also type any other ShortName from the list.
 >
-> **语速/风格参数**：⭐ 推荐 `<rate or provider defaults>`（理由：<一句话>）。
+> **Speed / style**: ⭐ recommended `<rate or provider defaults>` (reason: <one sentence>).
 >
-> **生成完是否重新导出嵌入音频的 PPTX**：⭐ 推荐 **是**（一次到位，自动按音频时长设页面停留）。
+> **Re-export the PPTX with embedded audio after generation**: ⭐ recommended **yes** (one pass; page dwell time follows the audio duration).
 >
-> **带音频 PPTX 完成后是否继续导出视频**：⭐ 推荐 **原生编码**（本机 Windows PowerPoint 2016+ 可用时）。需要录下实际放映声音时可选 **实时放映录制**。
+> **Continue to video export after the narrated PPTX**: ⭐ recommended **native encoding** (when Windows PowerPoint 2016+ is available locally). Choose **live slideshow capture** if the actual playback sound must be recorded.
 >
-> 直接回"好"用全部推荐值，或告诉我想改的部分（如"音色 2，语速 -5%"或"用 MiniMax 的 voice_id xxx"）。
+> Reply "ok" to accept every recommendation, or tell me what to change (for example "voice 2, rate -5%" or "use ElevenLabs voice_id xxx").
 
-**Recommended-value rules**: mode — `edge` by default, the user's named provider/voice otherwise; never recommend audio-only providers/modes (Qwen, OpenAI, CosyVoice audio-only) when page-local SRT, subtitle animation, or video subtitles are needed. If the user insists, state that only audio is delivered. Voice — the Step 2 candidate that best fits the tone. Rate — edge `+0%`; `-5%` for dense notes (>4 long sentences per page), `+5%` for short tight notes, anything beyond needs a stated reason; cloud providers keep defaults unless asked. Embed — yes unless the user has a customized PPTX they do not want overwritten. Video — native encoding when `--check` succeeds; slideshow capture only on explicit choice; when automation is unavailable, deliver the narrated PPTX and never switch to screen recording or a third-party renderer.
+**Recommended-value rules**: mode — `edge` by default, the user's named provider/voice otherwise; never recommend audio-only providers (OpenAI) when page-local SRT, subtitle animation, or video subtitles are needed. If the user insists, state that only audio is delivered. Voice — the Step 2 candidate that best fits the tone. Rate — edge `+0%`; `-5%` for dense notes (>4 long sentences per page), `+5%` for short tight notes, anything beyond needs a stated reason; cloud providers keep defaults unless asked. Embed — yes unless the user has a customized PPTX they do not want overwritten. Video — native encoding when `--check` succeeds; slideshow capture only on explicit choice; when automation is unavailable, deliver the narrated PPTX and never switch to screen recording or a third-party renderer.
 
 ---
 
@@ -76,7 +76,7 @@ From the flat list, pick **3–6 candidates**: cover both genders when the local
 ```bash
 # 1. Generate audio (one provider form; flags in narration.md)
 python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --voice <ShortName> --rate=<rate>
-python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --provider <elevenlabs|minimax|qwen|cosyvoice|openai> --voice-id <id> [provider model flag]
+python3 skills/ppt-master/scripts/notes_to_audio.py <project_path> --provider <elevenlabs|openai> --voice-id <id> [provider model flag]
 
 # 2A. Only when narration-cue sync is selected and page SRT + animations.json exist
 python3 skills/ppt-master/scripts/narration_sync.py animations <project_path> --narration-start-floor 0.8 --narration-padding 0.5 --force
