@@ -2139,6 +2139,16 @@ Recorded narration:
         ),
     )
     text_flow_group.add_argument(
+        '--keep-line-breaks',
+        action='store_const',
+        const=TEXT_FLOW_PRESERVE,
+        dest='text_flow',
+        help=(
+            'Keep every authored line break as a hard break with no '
+            'PowerPoint wrapping (the old default).'
+        ),
+    )
+    text_flow_group.add_argument(
         '--merge-paragraphs',
         action='store_const',
         const=TEXT_FLOW_REFLOW,
@@ -2155,7 +2165,7 @@ Recorded narration:
             'strict per-line SVG positioning.'
         ),
     )
-    parser.set_defaults(text_flow=TEXT_FLOW_PRESERVE)
+    parser.set_defaults(text_flow=None)
     parser.add_argument(
         '--conversion-trace',
         nargs='?',
@@ -2930,7 +2940,7 @@ Recorded narration:
         args.use_narration_timings,
         args.inherit_motion_from is not None,
         args.image_sizing == 'display',
-        args.text_flow != TEXT_FLOW_PRESERVE,
+        args.text_flow not in (None, TEXT_FLOW_PRESERVE),
     ))
     if args.roundtrip and not roundtrip_passthrough_overridden:
         try:
@@ -3017,7 +3027,7 @@ Recorded narration:
                 changed_resource_pages=changed_resource_pages,
                 force_visual_changed=(
                     args.image_sizing == 'display'
-                    or args.text_flow != TEXT_FLOW_PRESERVE
+                    or args.text_flow not in (None, TEXT_FLOW_PRESERVE)
                 ),
                 force_motion_changed=roundtrip_motion_overridden,
                 force_transition_changed=roundtrip_transition_overridden,
@@ -3812,7 +3822,11 @@ Recorded narration:
         use_narration_timings=use_narration_timings,
         narration_padding=args.narration_padding,
         narration_start_floor=args.narration_start_floor,
-        text_flow=args.text_flow,
+        text_flow=(
+            args.text_flow
+            if args.text_flow is not None
+            else (TEXT_FLOW_PRESERVE if args.roundtrip else TEXT_FLOW_REFLOW)
+        ),
         image_optimize=not args.no_image_optimize,
         image_max_dimension=args.image_max_dimension,
         image_sizing=args.image_sizing,

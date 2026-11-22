@@ -6,6 +6,7 @@ import base64
 import binascii
 import copy
 import hashlib
+import dataclasses
 import math
 import re
 from pathlib import Path
@@ -138,6 +139,27 @@ from ..semantic_markers import is_static_page_frame
 class SvgNativeConversionError(RuntimeError):
     """Raised when an SVG cannot be faithfully converted to native DrawingML."""
 
+
+
+def _is_lone_text_box(result) -> bool:
+    """True for one ordinary text frame (a single p:sp with txBox)."""
+    xml = result.xml.lstrip()
+    return (
+        xml.startswith('<p:sp>')
+        and xml.count('<p:sp>') == 1
+        and '<p:cNvSpPr txBox="1"/>' in xml
+    )
+
+
+def _rename_lone_text_box(result, name: str):
+    """Give a flattened one-text group's frame the group's id as its name."""
+    xml = re.sub(
+        r'(<p:cNvPr id="\d+" name=")[^"]*(")',
+        lambda m: m.group(1) + _xml_escape(name) + m.group(2),
+        result.xml,
+        count=1,
+    )
+    return dataclasses.replace(result, xml=xml)
 
 def _hydrate_native_payloads(root: ET.Element, svg_path: Path) -> int:
     """Resolve compressed workspace payload references for native conversion."""
@@ -1439,9 +1461,12 @@ def convert_g(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
             not should_animate_group
             or logical_native_shape_group
             or logical_picture_effect_group
+            or _is_lone_text_box(child_results[0])
         )
     ):
         restored_child = _restore_placeholder_sp_pr(child_results[0], elem)
+        if elem_id and _is_lone_text_box(restored_child):
+            restored_child = _rename_lone_text_box(restored_child, elem_id)
         if should_animate_group and elem_id:
             shape_match = re.search(r'<p:cNvPr id="(\d+)"', restored_child.xml)
             if shape_match:

@@ -3741,10 +3741,7 @@ def convert_text(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
         )
         paragraph_autofit = (
             '<a:spAutoFit/>'
-            if (
-                ctx.text_flow == TEXT_FLOW_PRESERVE
-                and not is_placeholder_carrier
-            )
+            if not is_placeholder_carrier
             else '<a:noAutofit/>'
         )
         body_pr_xml = (

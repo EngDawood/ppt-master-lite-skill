@@ -28,6 +28,8 @@ Feature trim: removed narration audio, TTS backends, video and subtitle scripts,
 
 Speaker notes are off by default and are generated only when you ask for them.
 
+Text export: positioned lines are reflowed into one wrapping paragraph per text (resizable box, no hard breaks), and a group holding one text becomes a single box. Use `--keep-line-breaks` for the old behavior.
+
 Install as a marketplace: `/plugin marketplace add EngDawood/ppt-master-lite-skill`, then `/plugin install ppt-master-lite@ppt-master-lite`.
 
 Standalone cleanup: removed everything that only served the upstream repository or website: the test suite, `prompt_audit.py` and its manifest, `update_repo.py`, `generate_examples_index.py`, the maintenance smoke docs, the scripts index README and the image-comparison gallery. Links to removed files were turned into plain text. `SKILL.md` has a short "Lite Build" section telling the agent to pick "No base icons" and skip sounds. A real run (project init, SVG check, finalize, PPTX export) was verified.

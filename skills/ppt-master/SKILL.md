@@ -140,6 +140,7 @@ This is a standalone lite copy. It bundles no icon libraries and no sound librar
 - Speaker notes: off by default. Generate them only when the user explicitly asks; otherwise skip `executor-notes.md`, do not create `notes/`, and export with `--no-notes`.
 - Audio and video: narration audio, TTS and MP4 export are not bundled. Keep Narration Audio off and do not offer a narrated video. Speaker notes and PPTX animations still work.
 - AI image generation: not bundled. Do not choose the `ai` acquisition path. Use user-provided images, web search (`image_search.py`) or no images.
+- Text wrapping: the exporter reflows positioned `tspan` lines into one wrapping paragraph per `<text>` (no hard line breaks, auto-fit height) and flattens a group that holds a single text into that text frame. Write each paragraph as one logical sentence; do not rely on manual breaks for meaning. Use `--keep-line-breaks` only when a hard break is intended.
 - Language scope: Arabic and English only.
 
 ## Repository Compatibility
