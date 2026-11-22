@@ -347,11 +347,9 @@ authoring guidance in
 
 ## Shape Boolean maintenance smoke
 
-Run this manual smoke from the repository root after changing
+Run this manual smoke after changing
 `shape_boolean_svg.py`, preset geometry, path conversion, or custom-geometry
-import/export. It uses only a gitignored `projects/_smoke_*` workspace and the
-inline-smoke convention from [`code-style.md`](../../../../docs/rules/code-style.md)
-§11; do not turn it into a test file or example deck.
+import/export. It uses only a temporary `projects/_smoke_*` workspace; do not turn it into a test file or example deck.
 
 ```bash
 python3 - <<'PY'
@@ -1082,7 +1080,7 @@ Behavior:
   supplies the default gap between successive non-trigger-shape rows in
   `after-previous` mode (default `0.5`)
 - Optional object-level overrides live in `<project>/animations.json` or a path passed via `--animation-config`; build and validate them with `animation_config.py scaffold|validate`. The scaffold is neutral (`defaults.animation.effect: none`, untouched groups `{}`). A populated group uses either the fully compatible legacy single-effect fields or a non-empty `effects[]`, never both; every `effects[]` row names an explicit effect
-- Transition/object sound remains off by default. After SVG and visual motion are complete and one row has a concrete auditory job, read the complete [`sound-vocabulary.md`](../../templates/sounds/sound-vocabulary.md), then copy only selected ids with `sound_sync.py <project> <namespace>/<sound_id> [...]`; `list --query <term>` is optional exact filtering after that review. `transition.sound` references a project-relative `.wav`; object-animation `sound` accepts the existing `.m4a`/`.mp3`/`.wav` path contract, while bundled selections use the synced project-relative `.wav`. With no selected cue, do not create `<project>/sounds/`. Export never resolves ids or reads `templates/sounds/` directly
+- Transition/object sound remains off by default. After SVG and visual motion are complete and one row has a concrete auditory job, read the complete `sound-vocabulary.md`, then copy only selected ids with `sound_sync.py <project> <namespace>/<sound_id> [...]`; `list --query <term>` is optional exact filtering after that review. `transition.sound` references a project-relative `.wav`; object-animation `sound` accepts the existing `.m4a`/`.mp3`/`.wav` path contract, while bundled selections use the synced project-relative `.wav`. With no selected cue, do not create `<project>/sounds/`. Export never resolves ids or reads `templates/sounds/` directly
 - One `effects[]` row becomes one Animation Pane record on the group's shape target. Each row may independently set sequence `order`, `delay`, `duration`, `trigger`, and `trigger_shape`; ordinary rows use page-wide order, while `trigger_shape` rows keep relative order in separate interactive sequences and imply `on-click`
 - Animation configuration is strict: unknown effects/modes/triggers, invalid finite/range/order values, missing slides/groups, and structural-layer targets fail export without fallback or silent omission
 - Generated export reads every slide back and verifies animation row order, including repeated rows on one shape target, trigger, shape target, resolved effect tuple and native behavior signature, duration, and offset. Package validation then checks timing placement, `p:cTn` ids, and `p:spTgt` references before publication

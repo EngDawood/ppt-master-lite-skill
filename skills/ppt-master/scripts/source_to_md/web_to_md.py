@@ -77,7 +77,7 @@ from _conversion_profile import (  # noqa: E402
 configure_utf8_stdio()
 
 # Help must not depend on the optional conversion packages: a stdlib-only
-# interpreter still gets the argparse usage (docs/rules/code-style.md §4).
+# interpreter still gets the argparse usage.
 _HELP_REQUESTED = __name__ == "__main__" and any(
     arg in {"-h", "--help"} for arg in sys.argv[1:]
 )

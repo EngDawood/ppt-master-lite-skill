@@ -42,5 +42,4 @@ Maintainer-only inventory for adding, moving, or removing workflow documents. Ru
 1. Add a top-level route only for a distinct artifact lifecycle and mutation model; synchronize [`routing.md`](./routing.md).
 2. Register profiles, stages, governance files, and Create Template children only in §2.
 3. Keep commands and trigger procedures in the owning authority, not in this registry.
-4. Update `scripts/prompt_audit_manifest.json` load sets and coverage in the same change.
-5. Keep this registry out of runtime load sets.
+4. Keep this registry out of runtime load sets.

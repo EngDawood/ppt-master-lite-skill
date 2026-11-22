@@ -118,7 +118,7 @@ When one semantic object continues across adjacent slides, the destination slide
 
 ### 2.2 On-Demand Sound Selection
 
-**Hard rule — select after motion, materialize after selection**: sound is not a Strategist resource and never appears in `design_spec.md`, `spec_lock.md`, or pre-SVG preparation. After the roster and motion solution are final, and only when a specific cue is selected: read the complete [`sound-vocabulary.md`](../templates/sounds/sound-vocabulary.md), choose one exact id for the auditory job, sync only that id, and reference the project-local `sounds/<namespace>/<file>.wav`. User audio already in the project is referenced by its project-relative path (`.m4a` / `.mp3` / `.wav` for objects, `.wav` for transitions). With no concrete cue job omit `sound` and create no `sounds/`.
+**Hard rule — select after motion, materialize after selection**: sound is not a Strategist resource and never appears in `design_spec.md`, `spec_lock.md`, or pre-SVG preparation. After the roster and motion solution are final, and only when a specific cue is selected: read the complete `sound-vocabulary.md`, choose one exact id for the auditory job, sync only that id, and reference the project-local `sounds/<namespace>/<file>.wav`. User audio already in the project is referenced by its project-relative path (`.m4a` / `.mp3` / `.wav` for objects, `.wav` for transitions). With no concrete cue job omit `sound` and create no `sounds/`.
 
 ```bash
 python3 skills/ppt-master/scripts/sound_sync.py list --query <term>                       # optional exact filtering after the vocabulary is in context

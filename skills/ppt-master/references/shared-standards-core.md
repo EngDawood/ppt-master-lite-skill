@@ -166,7 +166,7 @@ Semantic markers are minimal compiler hints. Flat pages declare one root `data-p
 
 - **Canvas authority**: new authoring writes `viewBox="0 0 W H"` with positive integer pixels from the lock, or from the first SVG under `quick-generate`; all pages and Layout prototypes in one build share it, optional root `width`/`height` never override it, and a root `<svg>` transform is forbidden. Export quantizes once at `1 SVG px = 9,525 EMU`.
 - **Font portability**: resolve an explicit user/template delivery target first; otherwise default to Windows Microsoft PowerPoint with locale following the deck's primary language. Exported Latin/EA faces must be installed or approved on that target. The authoring host's fonts affect SVG preview and measurement only and MUST NOT select PPTX faces; a local counterpart may appear only as a preview tail that preserves the same export resolution. `@font-face` remains forbidden; the family choice belongs to the planning role ([`plan-core.md`](plan-core.md) §6.2, shared by Default and Quick).
-- **Icon placeholders**: `<use data-icon="library/name">` is a pipeline-specific form, distinct from local SVG reuse. Follow the contract in [`../templates/icons/README.md`](../templates/icons/README.md).
+- **Icon placeholders**: `<use data-icon="library/name">` is a pipeline-specific form, distinct from local SVG reuse. Follow the contract in `../templates/icons/README.md`.
 - **Local reuse**: ordinary same-document `<use>` follows §1.3.
 
 ### 4.2 Editability, Package Promotion, and Text Leading

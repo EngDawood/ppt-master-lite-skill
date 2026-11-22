@@ -334,7 +334,7 @@ A directional solid object is a `shape` preset such as `rightArrow` or `chevron`
 
 ## 4. Icon Usage
 
-Executor draws from the complete prepared project-local pool; library rules are the [icon README](../templates/icons/README.md). Any SVG under `<project_path>/icons/<lib>/` is prepared material. Authoring, preview, finalization, and export resolve only complete case-sensitive `library/name` references there (`tabler-outline/award`, never `Award`; custom files keep their exact case), with no global or template-source fallback.
+Executor draws from the complete prepared project-local pool; library rules are the icon README. Any SVG under `<project_path>/icons/<lib>/` is prepared material. Authoring, preview, finalization, and export resolve only complete case-sensitive `library/name` references there (`tabler-outline/award`, never `Award`; custom files keep their exact case), with no global or template-source fallback.
 
 ```xml
 <use data-icon="chunk-filled/home" x="100" y="200" width="48" height="48" fill="#005587"/>

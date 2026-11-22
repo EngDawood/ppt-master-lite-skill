@@ -131,9 +131,17 @@ ends at export. Step numbers stay as written.
 
 ---
 
+## Lite Build
+
+This is a standalone lite copy. It bundles no icon libraries and no sound library, and it needs no repository, website or update step.
+
+- Icons: choose base-icon option **D (No base icons)** at confirmation. Do not run `icon_sync.py` or pick a bundled library. Custom or user-supplied SVG icons under `<project_path>/icons/<lib>/` remain valid.
+- Sounds: skip the sound cue pass. Do not run `sound_sync.py`.
+- Language scope: Arabic and English only.
+
 ## Repository Compatibility
 
 - This package is a workflow/skill, not a generic application scaffold. Do not create `.worktrees/`, `tests/`, branch workflows, or generic engineering structure by default.
 - Keep required workflow, reference, script, and template documentation inside this Skill directory.
-- Repository-level documents may point into the package; package runtime files must not depend on repository-level instructions.
+- Package runtime files must not depend on repository-level instructions.
 - On Windows, if a documented `python3 ...` command is unavailable, rerun the same command with `python`.

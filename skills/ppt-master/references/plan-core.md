@@ -2,7 +2,7 @@
 
 The planning craft shared by both Generate runtimes: what a deck plan decides before any page is drawn, and how to decide it well. Default Strategist reads it in the Step 4 batch and persists the results in `design_spec.md` / `spec_lock.md` ([`strategist.md`](./strategist.md) owns the confirmation stages and artifact grammar); Quick reads it in §2 and keeps the same decisions in active context ([`quick-generate.md`](../workflows/profiles/quick-generate.md) owns its commands and boundaries). "The page brief" below means §IX in Default and the transient page decision in Quick.
 
-Everything here is a plan-only or Reference decision under [`ownership.md`](../../../docs/rules/ownership.md): content, relationships, roster, rhythm, identity anchors, and resources bind; macro composition, motif, and pattern suggestions are References the Executor adjusts freely.
+Everything here is a plan-only or Reference decision under `ownership.md`: content, relationships, roster, rhythm, identity anchors, and resources bind; macro composition, motif, and pattern suggestions are References the Executor adjusts freely.
 
 ---
 
@@ -194,6 +194,6 @@ One single-select base identity, not a material whitelist:
 | **C** | Custom project icons | Supplied, template-carried, or imported assets |
 | **D** | No base icons | No shared generic base-icon identity is selected |
 
-AI illustrated icons are not a base option, add-on, field, or key — like decorative lettering they are a downstream image carrier §h and [`strategist-image.md`](./strategist-image.md) may choose, with slices under `images/` (never `icons/`, `icons.inventory`, or `<use data-icon>`); they may coexist with base icons. Real brand marks are identity assets: any company, product, service, or social identity in the content may use its exact supplied or `simple-icons` mark under every base choice, with no extra option. Library inventory, prefixes, and placeholder syntax: [`../templates/icons/README.md`](../templates/icons/README.md).
+AI illustrated icons are not a base option, add-on, field, or key — like decorative lettering they are a downstream image carrier §h and [`strategist-image.md`](./strategist-image.md) may choose, with slices under `images/` (never `icons/`, `icons.inventory`, or `<use data-icon>`); they may coexist with base icons. Real brand marks are identity assets: any company, product, service, or social identity in the content may use its exact supplied or `simple-icons` mark under every base choice, with no extra option. Library inventory, prefixes, and placeholder syntax: `../templates/icons/README.md`.
 
-One primary stylistic library per pool, chosen from the four characters in the [icon README](../templates/icons/README.md) table, with `stroke_width` from `{1.5, 2, 3}` for a stroke library; `simple-icons` is prepared from content for real brand marks. The pool is curated for broad semantic fit and synced before authoring; which icon a page uses is realization, never a preassignment.
+One primary stylistic library per pool, chosen from the four characters in the icon README table, with `stroke_width` from `{1.5, 2, 3}` for a stroke library; `simple-icons` is prepared from content for real brand marks. The pool is curated for broad semantic fit and synced before authoring; which icon a page uses is realization, never a preassignment.
