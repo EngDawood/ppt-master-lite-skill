@@ -4,7 +4,7 @@
 
 Conditional late-stage authority for generating or validating the complete speaker-notes document.
 
-**Trigger**: Default loads this after the final quality check when the effective Speaker Notes outcome in `design_spec.md §I` is enabled (a missing legacy outcome defaults to enabled); Quick loads it after its final check when the agent selected notes or narration. Narration requires notes; with notes disabled, do not load this branch or create `notes/total.md`.
+**Trigger**: Default loads this after the final quality check when the effective Speaker Notes outcome in `design_spec.md §I` is enabled (a missing outcome defaults to disabled); Quick loads it after its final check when the agent selected notes or narration. Narration requires notes; with notes disabled, do not load this branch or create `notes/total.md`.
 
 ## 1. Complete Speaker-notes Document
 

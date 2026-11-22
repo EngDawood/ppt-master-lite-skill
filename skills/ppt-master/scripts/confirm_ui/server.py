@@ -1970,7 +1970,7 @@ _CONTRACT_VALUE_KEYS = (
     'content_divergence',
 )
 _PROACTIVE_EXECUTION_DEFAULTS = {
-    'proactive_speaker_notes': True,
+    'proactive_speaker_notes': False,
     'proactive_custom_animations': False,
     'proactive_narration_audio': False,
 }

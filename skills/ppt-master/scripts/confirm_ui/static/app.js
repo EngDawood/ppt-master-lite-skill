@@ -129,7 +129,7 @@
             image_usage_none_exclusive: "No images cannot be combined with other image options.",
             proactive_execution_hint: "These defaults apply only when you have not explicitly instructed otherwise. Your latest explicit instruction always takes priority.",
             proactive_speaker_notes: "Proactively generate speaker notes",
-            proactive_speaker_notes_desc: "On by default. The agent generates speaker notes without a separate request.",
+            proactive_speaker_notes_desc: "Off by default. Speaker notes are generated only when you ask for them.",
             proactive_custom_animations: "Proactively create custom animations",
             proactive_custom_animations_desc: "Off by default. Strategist motion suggestions remain available; turn this on to have the agent create custom animations without a separate request.",
             proactive_narration_audio: "Proactively generate narration audio",
@@ -4160,7 +4160,7 @@
 
     function initProductionState() {
         STATE.image_ai_path = pick("image_ai_path", CAT.image_ai_path);
-        STATE.proactive_speaker_notes = booleanRecommendation("proactive_speaker_notes", true);
+        STATE.proactive_speaker_notes = booleanRecommendation("proactive_speaker_notes", false);
         STATE.proactive_custom_animations = booleanRecommendation("proactive_custom_animations", false);
         STATE.proactive_narration_audio = booleanRecommendation("proactive_narration_audio", false);
 

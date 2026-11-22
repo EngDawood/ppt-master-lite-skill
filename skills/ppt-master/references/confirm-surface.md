@@ -59,7 +59,7 @@ Create only after Stage 1 and verified installation (or `free_design`); bind top
   },
   "page_count": { "value": "12-15" },
   "image_notes": { "value": "封面和章节页用 AI 主视觉；产品页优先用户素材。" },
-  "proactive_speaker_notes": { "value": true },
+  "proactive_speaker_notes": { "value": false },
   "proactive_custom_animations": { "value": false },
   "proactive_narration_audio": { "value": false },
   "refine_spec": { "value": false },

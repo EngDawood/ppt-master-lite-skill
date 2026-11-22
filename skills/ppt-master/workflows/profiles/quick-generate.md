@@ -30,7 +30,7 @@ Artifact roles follow [`artifact-ownership.md`](../../references/artifact-owners
 
 **Hard rule — speed removes interaction and durable planning, not capability**: every ordinary source, research, carrier, resource, analysis, authoring, and export capability stays available when it serves the deck — availability, not a requirement to use every carrier. Explicit user facts, wording, choices, exclusions, and permission boundaries still win.
 
-**Default — optional production behavior (may override when useful)**: Speaker Notes, Custom Animations, and narration start off. Enable any of them when the request or deck benefits, with their normal inputs and flags and without asking. Quick never creates or reads a root Design Spec or lock to do so.
+**Default — optional production behavior (may override when useful)**: Speaker Notes, Custom Animations, and narration start off. Enable Speaker Notes only when the user explicitly asks for them; Custom Animations may still be enabled when the request or deck benefits. Use the normal inputs and flags and do not ask. Quick never creates or reads a root Design Spec or lock to do so.
 
 **Mandatory — discover motion before deciding whether to load it**: once, during §2's pre-P01 planning. Keep the defaults when no row supplies a concrete communication job. When several rows apply, use the earliest load point — a before-authoring signal beats before-export.
 

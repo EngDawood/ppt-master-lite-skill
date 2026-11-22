@@ -26,6 +26,8 @@ Sponsor pages removed: `SPONSORS.md` and `SPONSORS_CN.md` are deleted, together 
 
 Feature trim: removed narration audio, TTS backends, video and subtitle scripts, AI image generation (`image_gen.py` and its provider backends) and the Gemini watermark remover. Web image search, speaker notes and animations stay. Size is now about 13 MB.
 
+Speaker notes are off by default and are generated only when you ask for them.
+
 Install as a marketplace: `/plugin marketplace add EngDawood/ppt-master-lite-skill`, then `/plugin install ppt-master-lite@ppt-master-lite`.
 
 Standalone cleanup: removed everything that only served the upstream repository or website: the test suite, `prompt_audit.py` and its manifest, `update_repo.py`, `generate_examples_index.py`, the maintenance smoke docs, the scripts index README and the image-comparison gallery. Links to removed files were turned into plain text. `SKILL.md` has a short "Lite Build" section telling the agent to pick "No base icons" and skip sounds. A real run (project init, SVG check, finalize, PPTX export) was verified.

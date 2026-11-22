@@ -31,7 +31,7 @@ Canvas formats and their typography scale start: [`canvas-formats.md`](canvas-fo
 
 **Selected direction**: `design_directions.selected` is the actual zero-based index (`0`, `1`, or `2`) of the strongest fit, chosen after all three §d directions are complete. With an installed template it is the viable direction that best expresses its resolved context under [`strategist-template.md`](./strategist-template.md). Array order never determines preference.
 
-**Production defaults**: proactive defaults are notes `true`, custom animations `false`, narration `false`. An earlier explicit instruction overrides the matching recommendation; narration requires notes. Recommend `design_spec_depth: brief` (the same author draws the pages); recommend `complete` only for `split`, `refine_spec: true`, a preservation profile, or a requested hand-off document. Author each stage once; launch/wait mechanics are [`generate-pptx.md`](../workflows/generate-pptx.md) Step 4.
+**Production defaults**: proactive defaults are notes `false`, custom animations `false`, narration `false`. An earlier explicit instruction overrides the matching recommendation; narration requires notes. Recommend `design_spec_depth: brief` (the same author draws the pages); recommend `complete` only for `split`, `refine_spec: true`, a preservation profile, or a requested hand-off document. Author each stage once; launch/wait mechanics are [`generate-pptx.md`](../workflows/generate-pptx.md) Step 4.
 
 **Default — continuity-aware whole solution (may override when a scene reset communicates better)**: before recommending page count or production mechanics, judge whether adjacent beats can stay within one recognizable mental map while a visible state changes. Where that lowers cognitive switching and motion has a named job, let it shape the spine, rhythm, visual approach, and notes/narration segmentation, and recommend `proactive_custom_animations: true`. Plan such neighbors as visible states of one scene: recognizable anchors kept, the delta legible, each enabled notes/narration segment aligned with its state, every state page still carrying content and an `Audience move`. Reset when the map changes or continuity adds nothing. One positive signal, not the only one: topic or wording repetition alone is insufficient, and a `Motion suggestion` never changes the effective outcome.
 
@@ -192,7 +192,7 @@ If `images/` is non-empty, run `python3 scripts/analyze_images.py <project_path>
 
 ### Speaker Notes Requirements
 
-Resolve the effective outcome as latest explicit instruction → final Stage 2 `proactive_speaker_notes` → default `true`; enabled Narration Audio requires enabled notes and names that dependency in provenance.
+Resolve the effective outcome as latest explicit instruction → final Stage 2 `proactive_speaker_notes` → default `false` (speaker notes only when the user asks); enabled Narration Audio requires enabled notes and names that dependency in provenance.
 
 | Effective outcome | Design Spec §X |
 |---|---|
