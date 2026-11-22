@@ -137,6 +137,8 @@ This is a standalone lite copy. It bundles no icon libraries and no sound librar
 
 - Icons: choose base-icon option **D (No base icons)** at confirmation. Do not run `icon_sync.py` or pick a bundled library. Custom or user-supplied SVG icons under `<project_path>/icons/<lib>/` remain valid.
 - Sounds: skip the sound cue pass. Do not run `sound_sync.py`.
+- Audio and video: narration audio, TTS and MP4 export are not bundled. Keep Narration Audio off and do not offer a narrated video. Speaker notes and PPTX animations still work.
+- AI image generation: not bundled. Do not choose the `ai` acquisition path. Use user-provided images, web search (`image_search.py`) or no images.
 - Language scope: Arabic and English only.
 
 ## Repository Compatibility

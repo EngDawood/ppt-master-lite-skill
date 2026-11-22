@@ -90,7 +90,7 @@ The 203 canonical keys of [`animations.md`](../../references/animations.md) §4 
 
 ### 3.3 Optional Sound Pass
 
-Only after visual transition, lifecycle, effect, order, and timing are complete, run the optional sound pass in [`animations.md`](../../references/animations.md) §2.2; the selected project-relative `.wav` goes in `transition.sound`, `animation.sound`, or the group/effect row, and user-provided audio in the project uses its own path when the format is valid. Gain, limiting, and video mixing belong to [`generate-audio`](./generate-audio.md), never this sidecar.
+Only after visual transition, lifecycle, effect, order, and timing are complete, run the optional sound pass in [`animations.md`](../../references/animations.md) §2.2; the selected project-relative `.wav` goes in `transition.sound`, `animation.sound`, or the group/effect row, and user-provided audio in the project uses its own path when the format is valid. Gain, limiting, and video mixing belong to `generate-audio`, never this sidecar.
 
 ---
 
@@ -110,7 +110,7 @@ When `animations.json` was created or changed after §1, run `python3 ${SKILL_DI
 
 ### 5.1 Optional Video Motion Handoff
 
-When a downstream renderer will enhance the deck, have Step 7.3 append `--conversion-trace`, then derive the plan from the final resolved trace (the `--recorded-narration` trace for narrated output): `python3 ${SKILL_DIR}/scripts/video_motion_plan.py <project_path>/validation/<output_stem>.trace.json -o <project_path>/validation/video_motion_plan.json --style adaptive --force`. The plan locks identity, effect, direction, order, bounds, and timing and may refine renderer parameters only ([`video-motion-plan.md`](../../scripts/docs/video-motion-plan.md)). With resolved sound cues on the native-export branch, the same final trace and narrated PPTX feed `video_sound_mix.py`; an explicit slideshow capture records native cue playback and uses no trace for mixing.
+When a downstream renderer will enhance the deck, have Step 7.3 append `--conversion-trace`, then derive the plan from the final resolved trace (the `--recorded-narration` trace for narrated output): `python3 ${SKILL_DIR}/scripts/video_motion_plan.py <project_path>/validation/<output_stem>.trace.json -o <project_path>/validation/video_motion_plan.json --style adaptive --force`. The plan locks identity, effect, direction, order, bounds, and timing and may refine renderer parameters only (`video-motion-plan.md`). With resolved sound cues on the native-export branch, the same final trace and narrated PPTX feed `video_sound_mix.py`; an explicit slideshow capture records native cue playback and uses no trace for mixing.
 
 ---
 

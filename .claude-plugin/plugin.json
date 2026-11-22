@@ -1,6 +1,6 @@
 {
   "name": "ppt-master-lite",
-  "description": "Lite build of hugohe3/ppt-master: AI presentation workflow that generates editable PPTX decks. Icons, sounds and Chinese-only templates and providers removed (79 MB to about 18 MB); Arabic and English only.",
+  "description": "Lite build of hugohe3/ppt-master: AI presentation workflow that generates editable PPTX decks. Icons, sounds, audio and video export, AI image generation and Chinese-only templates and providers removed (79 MB to about 13 MB); Arabic and English only.",
   "version": "6.10.0-lite",
   "author": { "name": "EngDawood" },
   "homepage": "https://github.com/EngDawood/ppt-master-lite-skill",

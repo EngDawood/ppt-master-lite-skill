@@ -271,7 +271,7 @@ Official references:
 
 See [`pptx-transitions.md`](./pptx-transitions.md) for the symmetric page-motion
 core, MCE handling, and slide-advance contract.
-See [`video-motion-plan.md`](./video-motion-plan.md) for the downstream
+See `video-motion-plan.md` for the downstream
 animation-to-video contract.
 
 ## 8. Sidecar Field Reference

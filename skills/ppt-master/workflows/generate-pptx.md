@@ -359,7 +359,7 @@ python3 ${SKILL_DIR}/scripts/finalize_svg.py <project_path>
 | Final Stage-2 `false` | Neither flag |
 | Conversion trace | Do not add `--conversion-trace` to every base export; an explicit `--conversion-trace <path>` writes to that destination instead of the default |
 
-Sound: the optional post-motion pass is [`animations.md`](../references/animations.md) §2.2. For a narrated MP4, [`generate-audio`](stages/generate-audio.md) owns the delivery choice.
+Sound: the optional post-motion pass is [`animations.md`](../references/animations.md) §2.2. For a narrated MP4, `generate-audio` owns the delivery choice.
 
 **Success criterion**: the command exits 0 and produces `exports/<project_name>_<timestamp>.pptx`, `validation/<project_name>_<timestamp>.report.json` with `passed` or `passed-with-warnings`, and `validation/<project_name>_<timestamp>.trace.json` when `--conversion-trace` was enabled. The exporter itself requires the current matching `final` quality report and exits nonzero on a missing, unreadable, unsupported, non-final, blocking, stale, or unverifiable one. Read the compact `[POSTFLIGHT]` receipt (`status`, `quality_gate`, slide count, warning counts, paths), disclose material warnings, and never `cat` the full report on success. Retain the report path for a later `deck_motion` handoff; postflight proves the package, not a later MP4 audio track.
 
@@ -375,4 +375,4 @@ A delivered project that comes back with a change stays in this route; planning 
 - [x] Notes split when enabled; disabled exports used `--no-notes`
 - [x] `svg_final/` preview built
 - [x] Native PPTX published and postflight report written
-- [ ] **Next**: report the exported PPTX path; when the effective Narration Audio outcome in `design_spec.md §I` is enabled, run [`generate-audio`](stages/generate-audio.md); otherwise run a supporting post-export stage only on its explicit trigger
+- [ ] **Next**: report the exported PPTX path; when the effective Narration Audio outcome in `design_spec.md §I` is enabled, run `generate-audio`; otherwise run a supporting post-export stage only on its explicit trigger

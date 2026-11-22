@@ -24,6 +24,10 @@ Not trimmed: the confirm UI (`scripts/confirm_ui`) still carries Chinese, Tradit
 
 Sponsor pages removed: `SPONSORS.md` and `SPONSORS_CN.md` are deleted, together with the `sponsors` field in `SKILL.md`, the sponsor note in its rules, and the matching prompt-audit entries. To keep the skill runnable, `scripts/attribution_guard.py` no longer requires those files or that field. `LICENSE` (MIT, Copyright (c) 2025-2026 Hugo He) and the copyright, license and repository fields in `SKILL.md` are unchanged and still checked.
 
+Feature trim: removed narration audio, TTS backends, video and subtitle scripts, AI image generation (`image_gen.py` and its provider backends) and the Gemini watermark remover. Web image search, speaker notes and animations stay. Size is now about 13 MB.
+
+Install as a marketplace: `/plugin marketplace add EngDawood/ppt-master-lite-skill`, then `/plugin install ppt-master-lite@ppt-master-lite`.
+
 Standalone cleanup: removed everything that only served the upstream repository or website: the test suite, `prompt_audit.py` and its manifest, `update_repo.py`, `generate_examples_index.py`, the maintenance smoke docs, the scripts index README and the image-comparison gallery. Links to removed files were turned into plain text. `SKILL.md` has a short "Lite Build" section telling the agent to pick "No base icons" and skip sounds. A real run (project init, SVG check, finalize, PPTX export) was verified.
 
 Total goes from 79 MB to about 18 MB. Everything else is untouched: `workflows/`, `references/`, the remaining scripts and templates.

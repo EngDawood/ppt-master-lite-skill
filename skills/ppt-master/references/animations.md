@@ -10,7 +10,7 @@ Motion is several separate capabilities, not one dial; two of them are decided w
 |---|---|---|
 | A generic deck-wide entrance build | `-a auto`; with the default `after-previous` Start, groups use fixed `--animation-stagger` timing, not narration cues | Post-processing; §2, §4 |
 | Explicit object lifecycle choreography | An `animations.json` sidecar for selected enter/emphasize/move/exit/static duties, order, Start, timing | Post-processing; §2, §4, [`customize-animations`](../workflows/stages/customize-animations.md) |
-| Object reveals synchronized to recorded narration | Narration-cue sync derives `narration_animations.json` from `animations.json`, page-local SRT, and `narration_timing.json`; `-a auto` alone does not | Audio stage; [`generate-audio`](../workflows/stages/generate-audio.md) |
+| Object reveals synchronized to recorded narration | Narration-cue sync derives `narration_animations.json` from `animations.json`, page-local SRT, and `narration_timing.json`; `-a auto` alone does not | Audio stage; `generate-audio` |
 | A continuous action — slide-in, flip, camera push-in, progressive reveal, camera pan | **Morph: author the action as two static pages**, then select Morph and add explicit pairs when identity must be deterministic; there is no keyframe timeline anywhere — the difference between two editable slides *is* the animation | **Page authoring (Step 6), then motion post-processing** — §2.1, §3.1 |
 | A static full-bleed page that should stop looking frozen | Slow `path_*` motion on a visually subordinate image or atmospheric layer | Post-processing; §4.1 |
 | Carousel, counting numerals, parallax depth, click-to-reveal flip card | Four recipes assembled from the mechanisms above; carousel and odometer need paired pages | §4.2 |
@@ -249,7 +249,7 @@ Export rejects an unknown effect, mode, or trigger, invalid timing or order, a m
 
 ## 7. Video Adaptation Contract
 
-Video renderers consume the resolved conversion trace through `video_motion_plan.py` ([`video-motion-plan.md`](../scripts/docs/video-motion-plan.md)), never a raw sidecar; the plan locks identity, order, effect, direction, and timing.
+Video renderers consume the resolved conversion trace through `video_motion_plan.py` (`video-motion-plan.md`), never a raw sidecar; the plan locks identity, order, effect, direction, and timing.
 
 ## 8. Limitations
 
@@ -260,4 +260,4 @@ Video renderers consume the resolved conversion trace through `video_motion_plan
 
 ## 9. Implementation References
 
-[`pptx_transitions.py`](../scripts/pptx_transitions.py), [`svg-pipeline.md`](../scripts/docs/svg-pipeline.md), [`pptx-transitions.md`](../scripts/docs/pptx-transitions.md), [`pptx-animations.md`](../scripts/docs/pptx-animations.md), [`video-motion-plan.md`](../scripts/docs/video-motion-plan.md).
+[`pptx_transitions.py`](../scripts/pptx_transitions.py), [`svg-pipeline.md`](../scripts/docs/svg-pipeline.md), [`pptx-transitions.md`](../scripts/docs/pptx-transitions.md), [`pptx-animations.md`](../scripts/docs/pptx-animations.md), `video-motion-plan.md`.

@@ -40,7 +40,6 @@ Route selection authority for PPT Master. Select exactly one top-level route, th
 |---|---|
 | Raster files represent page frames to reconstruct into a layered editable PPTX | Activate [`image-to-pptx`](./profiles/image-to-pptx.md); normalize the frame roster and activate `quick-generate` directly |
 | Existing PPTX must preserve wording, page count, and order 1:1 | Activate [`beautify-pptx`](./profiles/beautify-pptx.md); Quick when that profile's explicit trigger also matches, otherwise `generate-pptx` |
-| Effective delivery purpose is recorded, self-running, or video-directed | Inside the selected runtime, load [`video-design`](../references/video-design.md) before whole-solution/page planning; a design reference, not a profile — notes, animation, audio, and native MP4 stay with their stages |
 | Explicit quick/fast, skip-strategy, or direct SVG-to-PPTX intent without an active fidelity profile | Load [`quick-generate`](./profiles/quick-generate.md) directly without `generate-pptx.md`: prepare sources/resources as needed, decide without interaction, apply at most one exact workspace root per kind supplied for this run (otherwise free design), omit Strategist/Confirm UI/spec/lock, hand-author SVG, run the lockless final checker, export |
 | Topic only, or sources leave planning-critical factual gaps | Run [`topic-research`](./stages/topic-research.md) inside the selected profile's source preparation — immediately for topic-only input, after conversion and reading for source-backed input; research only the identified gaps |
 | Existing PPTX redesigned (split, merged, re-outlined) | Treat the PPTX as source content through the selected Generate authority's intake; Default unless explicit Quick intent |
@@ -56,7 +55,6 @@ Route selection authority for PPT Master. Select exactly one top-level route, th
 | User requests preview, selection, or annotation application outside Image to PPTX | Default pipeline plus [`live-preview`](./stages/live-preview.md) at its defined stage; explicit Quick + preview intent falls back to Default rather than dropping preview. Image to PPTX stays Quick-only with its canonical-frame recomposition comparison |
 | Page transitions, auto-advance, or deck-wide animation settings without page-specific motion planning or an existing `animations.json` | Load [`animations`](../references/animations.md) and apply its export-level contract |
 | `<project_path>/animations.json` exists, the user explicitly requests per-slide/object-level animation control, or the effective Custom Animations outcome in `design_spec.md §I` is enabled | Run [`customize-animations`](./stages/customize-animations.md) after the final SVG quality gate and any speaker-note pass, before Step 7. A §IX `Motion suggestion` informs an active pass but never triggers it |
-| Explicit narration request or effective Narration Audio enabled in `design_spec.md §I`; Edit Native PPTX narration confirmed in its plan | Run [`generate-audio`](./stages/generate-audio.md) after the owning route's notes readiness; audio implies notes on every output page |
 
 **Hard rule — fidelity profiles, not fifth routes**: Image to PPTX and Beautify change different source/page invariants and are mutually exclusive. Image to PPTX always activates Quick; Beautify uses Quick only on explicit Quick intent. Neither defines a separate lifecycle or loads both runtimes.
 
@@ -96,7 +94,7 @@ Create Template remains the fixed route name and owns the shared contract; these
 
 ## 6. Native and Shared Post-Processing Boundary
 
-A main-generated project with notes and an exported deck narrates through the shared [`generate-audio`](./stages/generate-audio.md) stage; an arbitrary finished PPTX whose visible slides must be preserved goes to Edit Native PPTX, whose narration module invokes the same stage rules against the round-trip workspace. Object animation for generated SVG projects uses the animation stage; Edit Native PPTX preserves source motion by default and writes requested motion as an overlay per [`animations.md`](../references/animations.md).
+A main-generated project with notes and an exported deck narrates through the shared `generate-audio` stage; an arbitrary finished PPTX whose visible slides must be preserved goes to Edit Native PPTX, whose narration module invokes the same stage rules against the round-trip workspace. Object animation for generated SVG projects uses the animation stage; Edit Native PPTX preserves source motion by default and writes requested motion as an overlay per [`animations.md`](../references/animations.md).
 
 ---
 

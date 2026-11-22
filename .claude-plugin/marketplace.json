@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ppt-master-lite",
+  "description": "Lite Arabic and English build of the ppt-master skill for generating editable PPTX decks",
+  "owner": { "name": "EngDawood" },
+  "plugins": [
+    {
+      "name": "ppt-master-lite",
+      "description": "AI presentation workflow that generates editable PPTX decks. Lite build: no icons, sounds, audio or video export, no AI image generation; Arabic and English only.",
+      "version": "6.10.0-lite",
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://github.com/EngDawood/ppt-master-lite-skill"
+    }
+  ]
+}
